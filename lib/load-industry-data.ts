@@ -208,8 +208,20 @@ function generateLoansFromData(transactions: IndustryTransaction[], companyName:
 }
 
 function calculateKPIMetrics(bankStatements: BankStatement[]): KPIMetrics {
-  // Берем последние 90 дней
-  const threeMonthsAgo = new Date();
+  if (!bankStatements || bankStatements.length === 0) {
+    return {
+      cashFlow: 0,
+      runway: 0,
+      riskScore: 100,
+      liquidityRatio: 0,
+      burnRate: 0,
+      revenue: 0,
+    };
+  }
+  
+  // Берем последние 90 дней ОТ ПОСЛЕДНЕЙ ТРАНЗАКЦИИ, а не от текущей даты
+  const lastDate = new Date(bankStatements[bankStatements.length - 1].date);
+  const threeMonthsAgo = new Date(lastDate);
   threeMonthsAgo.setDate(threeMonthsAgo.getDate() - 90);
   
   const recentStatements = bankStatements.filter(

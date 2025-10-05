@@ -15,39 +15,10 @@ export const useAppStoreHydrated = () => {
   const store = useAppStore();
   const isHydrated = useHydration();
 
-  if (!isHydrated) {
-    return {
-      currentPage: 'welcome',
-      userPreferences: null,
-      selectedIndustry: null,
-      bankStatements: [],
-      arAp: [],
-      loans: [],
-      forecasts: [],
-      kpiMetrics: null,
-      aiAnalysis: null,
-      chatMessages: [],
-      isChatOpen: false,
-      scenarios: [],
-      financingOptions: [],
-      isLoading: false,
-      setUserPreferences: () => {},
-      setSelectedIndustry: () => {},
-      setBankStatements: () => {},
-      setARAP: () => {},
-      setLoans: () => {},
-      setForecasts: () => {},
-      setKPIMetrics: () => {},
-      setAIAnalysis: () => {},
-      addChatMessage: () => {},
-      setChatOpen: () => {},
-      setCurrentPage: () => {},
-      setLoading: () => {},
-      setScenarios: () => {},
-      setFinancingOptions: () => {},
-      reset: () => {},
-    };
-  }
-
-  return store;
+  // Возвращаем store напрямую, но с флагом гидратации
+  // Setter-функции будут работать даже до гидратации
+  return {
+    ...store,
+    isHydrated,
+  };
 };

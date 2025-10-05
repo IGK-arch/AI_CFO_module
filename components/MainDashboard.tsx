@@ -39,8 +39,16 @@ export default function MainDashboard() {
   const [activeTab, setActiveTab] = useState('forecast');
 
   // Debug: проверяем, что данные загрузились
-  console.log('🔍 MainDashboard - kpiMetrics:', kpiMetrics);
-  console.log('🔍 MainDashboard - selectedIndustry:', selectedIndustry);
+  console.log('🔍 MainDashboard render - kpiMetrics:', kpiMetrics);
+  console.log('🔍 MainDashboard render - selectedIndustry:', selectedIndustry);
+  
+  // Если данных нет, показываем предупреждение
+  if (!kpiMetrics) {
+    console.warn('⚠️ kpiMetrics отсутствует в MainDashboard!');
+  }
+  if (!selectedIndustry) {
+    console.warn('⚠️ selectedIndustry отсутствует в MainDashboard!');
+  }
   
   // Добавляем возможность принудительной перезагрузки для отладки
   if (!kpiMetrics && typeof window !== 'undefined') {
@@ -112,10 +120,10 @@ export default function MainDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {kpiMetrics?.cashFlow ? kpiMetrics.cashFlow.toLocaleString() : '0'} ₽
+                {kpiMetrics ? kpiMetrics.cashFlow.toLocaleString() : '0'} ₽
               </div>
               <p className="text-xs text-muted-foreground">
-                {kpiMetrics?.cashFlow ? '+12% с прошлого месяца' : 'Загрузка данных...'}
+                {kpiMetrics ? '+12% с прошлого месяца' : 'Загрузка данных...'}
               </p>
             </CardContent>
           </Card>
@@ -127,11 +135,11 @@ export default function MainDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {kpiMetrics?.burnRate ? kpiMetrics.burnRate.toLocaleString() : '0'} ₽/мес
+                {kpiMetrics ? kpiMetrics.burnRate.toLocaleString() : '0'} ₽/мес
               </div>
               <p className="text-xs text-muted-foreground">
-                Runway: {kpiMetrics?.runway && isFinite(kpiMetrics.runway) 
-                  ? `${kpiMetrics.runway} месяцев` 
+                Runway: {kpiMetrics && isFinite(kpiMetrics.runway) 
+                  ? `${kpiMetrics.runway.toFixed(1)} месяцев` 
                   : 'Загрузка...'}
               </p>
             </CardContent>

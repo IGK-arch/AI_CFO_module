@@ -57,53 +57,41 @@ export default function Home() {
     // 1. Мы на клиенте
     // 2. Отрасль выбрана
     // 3. Данные еще не загружены (нет kpiMetrics или bankStatements)
-    if (isClient && selectedIndustry && (!kpiMetrics || bankStatements.length === 0)) {
+    if (isClient && selectedIndustry && (!kpiMetrics || !bankStatements || bankStatements.length === 0)) {
       console.log(`📊 Загрузка реалистичных данных для отрасли: ${selectedIndustry.id}`);
       
       try {
         const industryData = loadIndustryData(selectedIndustry.id);
-        console.log('📦 industryData:', industryData);
+        console.log('📦 Загруженные данные:', {
+          bankStatements: industryData.bankStatements?.length || 0,
+          kpiMetrics: industryData.kpiMetrics,
+          forecasts: industryData.forecasts?.length || 0,
+          scenarios: industryData.scenarios?.length || 0
+        });
         
-        if (industryData) {
-          console.log('✅ Данные успешно загружены!');
-          console.log('💾 Сохраняем bankStatements:', industryData.bankStatements.length, 'записей');
-          console.log('💾 Сохраняем kpiMetrics:', industryData.kpiMetrics);
+        if (industryData && industryData.kpiMetrics && industryData.bankStatements?.length > 0) {
+          console.log('✅ Данные валидны, начинаем сохранение');
+          console.log('💰 Денежный поток:', industryData.kpiMetrics.cashFlow, '₽');
+          console.log('📊 Burn Rate:', industryData.kpiMetrics.burnRate, '₽/мес');
           
+          // Сохраняем все данные одновременно
           setBankStatements(industryData.bankStatements);
           setARAP(industryData.arAp);
           setLoans(industryData.loans);
           setKPIMetrics(industryData.kpiMetrics);
+          setForecasts(industryData.forecasts || []);
+          setScenarios(industryData.scenarios || []);
+          setFinancingOptions(industryData.financingOptions || []);
           
-          // Проверяем, что данные действительно сохранились
-          setTimeout(() => {
-            console.log('🔍 Проверка после сохранения - kpiMetrics:', kpiMetrics);
-            console.log('🔍 Проверка после сохранения - bankStatements:', bankStatements.length);
-          }, 100);
-          
-          // Используем прогнозы из индустриальных данных
-          if (industryData.forecasts) {
-            setForecasts(industryData.forecasts);
-            console.log('📈 Прогноз основан на реальных данных отрасли');
-          }
-          
-          // Используем сценарии из индустриальных данных
-          if (industryData.scenarios) {
-            setScenarios(industryData.scenarios);
-            console.log('🎲 Сценарии загружены для отрасли');
-          }
-          
+          // Генерируем AI анализ
           const aiAnalysis = generateAIAnalysis(
             industryData.kpiMetrics,
             selectedIndustry.id,
-            industryData.events
+            industryData.events || []
           );
           setAIAnalysis(aiAnalysis);
           
-          // Загружаем финансирование для отрасли
-          if (industryData.financingOptions) {
-            setFinancingOptions(industryData.financingOptions);
-            console.log('💰 Опции финансирования загружены');
-          }
+          console.log('✅ Все данные успешно сохранены в store!');
         }
       } catch (error) {
         console.error('❌ Ошибка загрузки данных:', error);
