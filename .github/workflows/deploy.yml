@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - main
+      - gh-pages
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
+  deployments: write
 
 concurrency:
   group: "pages"
