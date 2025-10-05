@@ -62,6 +62,12 @@ export default function Home() {
       
       try {
         const industryData = loadIndustryData(selectedIndustry.id);
+        
+        if (!industryData) {
+          console.error('❌ Не удалось загрузить данные для отрасли:', selectedIndustry.id);
+          return;
+        }
+        
         console.log('📦 Загруженные данные:', {
           bankStatements: industryData.bankStatements?.length || 0,
           kpiMetrics: industryData.kpiMetrics,
@@ -69,7 +75,7 @@ export default function Home() {
           scenarios: industryData.scenarios?.length || 0
         });
         
-        if (industryData && industryData.kpiMetrics && industryData.bankStatements?.length > 0) {
+        if (industryData.kpiMetrics && industryData.bankStatements?.length > 0) {
           console.log('✅ Данные валидны, начинаем сохранение');
           console.log('💰 Денежный поток:', industryData.kpiMetrics.cashFlow, '₽');
           console.log('📊 Burn Rate:', industryData.kpiMetrics.burnRate, '₽/мес');
