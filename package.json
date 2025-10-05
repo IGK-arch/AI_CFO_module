@@ -1,0 +1,52 @@
+{
+  "name": "cfo-ai",
+  "version": "1.0.0",
+  "description": "CFO-AI - Умное казначейство для МСП",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3002",
+    "build": "next build",
+    "start": "next start -p 3002",
+    "lint": "next lint",
+    "predeploy": "npm run build && npm run postexport",
+    "deploy": "gh-pages -d out -b gh-pages",
+    "postexport": "node scripts/postexport.cjs"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "3.3.2",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@tailwindcss/forms": "0.5.6",
+    "@tailwindcss/typography": "0.5.10",
+    "@types/node": "20.8.0",
+    "@types/papaparse": "5.3.8",
+    "@types/react": "18.2.25",
+    "@types/react-dom": "18.2.11",
+    "autoprefixer": "10.4.16",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "cmdk": "0.2.0",
+    "date-fns": "2.30.0",
+    "framer-motion": "10.16.4",
+    "lucide-react": "0.292.0",
+    "next": "14.0.0",
+    "papaparse": "5.4.1",
+    "postcss": "8.4.31",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "7.47.0",
+    "recharts": "2.8.0",
+    "sonner": "1.2.0",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss": "3.3.5",
+    "typescript": "5.2.2",
+    "vaul": "0.7.9",
+    "zod": "3.22.4",
+    "zustand": "4.4.4"
+  },
+  "devDependencies": {
+    "eslint": "8.51.0",
+    "eslint-config-next": "14.0.0",
+    "gh-pages": "^6.3.0"
+  }
+}
